@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 /**
  * Provides utility methods for checking availability of local TCP/UDP ports
  */
-public final class PortUtil {
+public class PortUtil {
 
 	public static final int MIN_PORT_NUMBER = 1024;
 	public static final int MAX_PORT_NUMBER = 65535;
@@ -15,7 +15,7 @@ public final class PortUtil {
 
 	private static PortUtil instance;
 
-	private PortUtil() {}
+	protected PortUtil() {}
 
 	public static PortUtil getInstance() {
 		if (instance == null) {
