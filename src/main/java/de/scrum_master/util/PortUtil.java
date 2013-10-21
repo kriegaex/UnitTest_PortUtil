@@ -9,7 +9,7 @@ import java.net.ServerSocket;
  */
 public final class PortUtil {
 
-	private static int MIN_PORT_NUMBER = 1025;
+	private static int MIN_PORT_NUMBER = 1024;
 	private static int MAX_PORT_NUMBER = 65535;
 
 	/**

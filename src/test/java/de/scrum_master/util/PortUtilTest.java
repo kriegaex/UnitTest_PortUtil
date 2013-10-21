@@ -14,7 +14,7 @@ public class PortUtilTest {
 	@Test
 	public void testPortRetrieval() throws IOException {
 		int port = PortUtil.getAvailablePort();
-		assertTrue(port > 1024 && port < 65536);
+		assertTrue(port >= 1024 && port < 65536);
 	}
 
 	@Test
