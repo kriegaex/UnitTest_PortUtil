@@ -1,6 +1,9 @@
 package de.scrum_master.util;
 
 import org.junit.Test;
+
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 /**
@@ -9,7 +12,7 @@ import static org.junit.Assert.*;
 public class PortUtilTest {
 
 	@Test
-	public void testPortRetrieval() {
+	public void testPortRetrieval() throws IOException {
 		int port = PortUtil.getAvailablePort();
 		assertTrue(port > 1024 && port < 65536);
 	}
