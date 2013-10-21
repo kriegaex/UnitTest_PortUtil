@@ -24,27 +24,25 @@ public final class PortUtil {
 		if (port < MIN_PORT_NUMBER || port > MAX_PORT_NUMBER) {
 			return false;
 		}
-		ServerSocket ss = null;
-		DatagramSocket ds = null;
+		ServerSocket serverSocket = null;
+		DatagramSocket datagramSocket = null;
 		try {
-			ss = new ServerSocket(port);
-			ss.setReuseAddress(true);
-			ds = new DatagramSocket(port);
-			ds.setReuseAddress(true);
+			serverSocket = new ServerSocket(port);
+			serverSocket.setReuseAddress(true);
+			datagramSocket = new DatagramSocket(port);
+			datagramSocket.setReuseAddress(true);
 			return true;
 		} catch (IOException e) {
 			// todo... nothing to do it is not free
 		} finally {
-			if (ds != null) {
-				ds.close();
+			if (datagramSocket != null) {
+				datagramSocket.close();
 			}
 
-			if (ss != null) {
+			if (serverSocket != null) {
 				try {
-					ss.close();
-				} catch (IOException e) {
-					/* should not be thrown */
-				}
+					serverSocket.close();
+				} catch (IOException e) {}
 			}
 		}
 
