@@ -5,7 +5,7 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
 /**
- * Provides utility methods for checking availability of TCP/UDP ports
+ * Provides utility methods for checking availability of local TCP/UDP ports
  */
 public final class PortUtil {
 
@@ -28,12 +28,12 @@ public final class PortUtil {
 	 * Checks if a specific TCP/UDP port is available
 	 *
 	 * @param port the port to be checked for availability
-	 * @return true if port is available; false if port is unavailable or outside legal range of
-	 * MIN_PORT_NUMBER..MAX_PORT_NUMBER
+	 * @return true if port is available; false if port is unavailable
+	 * @throws IllegalArgumentException if port is not in range MIN_PORT_NUMBER..MAX_PORT_NUMBER
 	 */
 	public boolean isAvailable(int port) {
 		if (port < MIN_PORT_NUMBER || port > MAX_PORT_NUMBER) {
-			return false;
+			throw new IllegalArgumentException("port out of range " + MIN_PORT_NUMBER + ".." + MAX_PORT_NUMBER);
 		}
 		ServerSocket serverSocket = null;
 		DatagramSocket datagramSocket = null;

@@ -47,10 +47,18 @@ public class PortUtilTest {
 		portUtil.getAvailablePort(PortUtil.MAX_PORT_OFFSET + 1);
 	}
 
-	@Test
-	public void testIllegalPortNumber() {
-		assertFalse(portUtil.isAvailable(-1));
-		assertFalse(portUtil.isAvailable(PortUtil.MIN_PORT_NUMBER - 1));
-		assertFalse(portUtil.isAvailable(PortUtil.MAX_PORT_NUMBER + 1));
+	@Test(expected = IllegalArgumentException.class)
+	public void testPortNumberNegative() {
+		portUtil.isAvailable(-1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testPortNumberTooSmall() {
+		portUtil.isAvailable(PortUtil.MIN_PORT_NUMBER - 1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testPortNumberTooBig() {
+		portUtil.isAvailable(PortUtil.MAX_PORT_NUMBER + 1);
 	}
 }
