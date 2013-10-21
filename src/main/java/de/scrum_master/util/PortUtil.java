@@ -13,6 +13,17 @@ public final class PortUtil {
 	public static final int MAX_PORT_NUMBER = 65535;
 	public static final int MAX_PORT_OFFSET = MAX_PORT_NUMBER - MIN_PORT_NUMBER;
 
+	private static PortUtil instance;
+
+	private PortUtil() {}
+
+	public static PortUtil getInstance() {
+		if (instance == null) {
+			instance = new PortUtil();
+		}
+		return instance;
+	}
+
 	/**
 	 * Checks if a specific TCP/UDP port is available
 	 *
@@ -20,7 +31,7 @@ public final class PortUtil {
 	 * @return true if port is available; false if port is unavailable or outside legal range of
 	 * MIN_PORT_NUMBER..MAX_PORT_NUMBER
 	 */
-	public static boolean isAvailable(int port) {
+	public boolean isAvailable(int port) {
 		if (port < MIN_PORT_NUMBER || port > MAX_PORT_NUMBER) {
 			return false;
 		}
@@ -54,7 +65,7 @@ public final class PortUtil {
 	 * @return the first free port within the search range
 	 * @throws IOException if no port is available at all
 	 */
-	public static int getAvailablePort() throws IOException {
+	public int getAvailablePort() throws IOException {
 		return getAvailablePort(0);
 	}
 
@@ -65,7 +76,7 @@ public final class PortUtil {
 	 * @throws IOException if no port is available at all
 	 * @throws IllegalArgumentException if offset is not in range 0..MAX_PORT_OFFSET
 	 */
-	public static int getAvailablePort(int offset) throws IOException {
+	public int getAvailablePort(int offset) throws IOException {
 		// TODO: Is this method really needed?
 		if (offset < 0 || offset > MAX_PORT_OFFSET)
 			throw new IllegalArgumentException("offset too big (must be in range 0.." + MAX_PORT_OFFSET + ")");
