@@ -5,7 +5,7 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
 /**
- * PortUtil is used for some checks on a local system regarding tcp and udp ports
+ * Provides utility methods for checking availability of TCP/UDP ports
  */
 public final class PortUtil {
 
@@ -13,9 +13,10 @@ public final class PortUtil {
 	private static int MAX_PORT_NUMBER = 65535;
 
 	/**
-	 * Checks to see if a specific port is available.
+	 * Checks if a specific TCP/UDP port is available
 	 *
-	 * @param port the port to check for availability
+	 * @param port the port to be checked for availability
+	 * @return true if port is available; false if port is unavailable or outside legal range of 1,024..65,535
 	 */
 	public static boolean isAvailable(int port) {
 		if (port < MIN_PORT_NUMBER || port > MAX_PORT_NUMBER) {
@@ -40,7 +41,7 @@ public final class PortUtil {
 				try {
 					ss.close();
 				} catch (IOException e) {
-                /* should not be thrown */
+					/* should not be thrown */
 				}
 			}
 		}
@@ -49,12 +50,13 @@ public final class PortUtil {
 	}
 
 	/**
-	 * Checks all ports, starting with 1024, if they are available. Will return the first one found.
-	 * @return a free tcp/udp port
+	 * Checks all TCP/UDP ports in the range of (1024 + a random offset between 0 and 3,000) and 65,535
+	 * for availability
+	 * @return the first free port within the search range
 	 * @throws IOException if no port is available at all
 	 */
 	public static int getAvailablePort() throws IOException {
-		int round = (int)Math.round(Math.random() * 3000) % 3000;
+		int round = (int) Math.round(Math.random() * 3000) % 3000;
 		for (int i = MIN_PORT_NUMBER + round; i <=MAX_PORT_NUMBER; i++) {
 			if (isAvailable(i)) {
 				return i;
@@ -62,5 +64,4 @@ public final class PortUtil {
 		}
 		throw new IOException("no port available");
 	}
-
 }
