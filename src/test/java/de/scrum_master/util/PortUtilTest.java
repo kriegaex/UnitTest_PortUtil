@@ -28,6 +28,15 @@ public class PortUtilTest {
 		socket.close();
 	}
 
+	@Test(expected = IOException.class)
+	public void testCannotGetAnyPort() throws IOException {
+		int port = portUtil.getAvailablePort(PortUtil.MAX_PORT_OFFSET);
+		ServerSocket socket = new ServerSocket(port);
+		socket.setReuseAddress(true);
+		port = portUtil.getAvailablePort(PortUtil.MAX_PORT_OFFSET);
+		socket.close();
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testOffsetTooSmall() throws IOException {
 		portUtil.getAvailablePort(-1);
