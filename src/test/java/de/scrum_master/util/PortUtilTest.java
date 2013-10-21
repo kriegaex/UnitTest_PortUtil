@@ -4,12 +4,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * TODO javadoc for PortUtilTest
+ * Checks the PortUtil for free use
  */
 public class PortUtilTest {
 
 	@Test
-	public void testPortRetrievment() {
+	public void testPortRetrieval() {
 		int port = PortUtil.getAvailablePort();
 		assertTrue(port > 1024 && port < 65536);
 	}

@@ -53,7 +53,8 @@ public final class PortUtil {
 	 * @return a free tcp/udp port or -1 if no port is available
 	 */
 	public static int getAvailablePort() {
-		for (int i = MIN_PORT_NUMBER; i <=MAX_PORT_NUMBER; i++) {
+		int round = (int)Math.round(Math.random() * 3000) % 3000;
+		for (int i = MIN_PORT_NUMBER + round; i <=MAX_PORT_NUMBER; i++) {
 			if (available(i)) {
 				return i;
 			}
