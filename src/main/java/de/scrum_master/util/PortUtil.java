@@ -17,7 +17,7 @@ public final class PortUtil {
 	 *
 	 * @param port the port to check for availability
 	 */
-	public static boolean available(int port) {
+	public static boolean isAvailable(int port) {
 		if (port < MIN_PORT_NUMBER || port > MAX_PORT_NUMBER) {
 			return false;
 		}
@@ -55,7 +55,7 @@ public final class PortUtil {
 	public static int getAvailablePort() {
 		int round = (int)Math.round(Math.random() * 3000) % 3000;
 		for (int i = MIN_PORT_NUMBER + round; i <=MAX_PORT_NUMBER; i++) {
-			if (available(i)) {
+			if (isAvailable(i)) {
 				return i;
 			}
 		}

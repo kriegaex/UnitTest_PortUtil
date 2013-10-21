@@ -16,9 +16,9 @@ public class PortUtilTest {
 
 	@Test
 	public void testUnexpectedPort() {
-		assertFalse(PortUtil.available(-232));
-		assertFalse(PortUtil.available(1023));
-		assertFalse(PortUtil.available(65536));
+		assertFalse(PortUtil.isAvailable(-232));
+		assertFalse(PortUtil.isAvailable(1023));
+		assertFalse(PortUtil.isAvailable(65536));
 	}
 
 }
