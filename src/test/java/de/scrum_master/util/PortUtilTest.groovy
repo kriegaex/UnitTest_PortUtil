@@ -1,38 +1,74 @@
 package de.scrum_master.util
 
+import org.junit.Rule
+import org.powermock.core.classloader.annotations.PrepareForTest
+import org.powermock.modules.junit4.rule.PowerMockRule
 import spock.lang.*
+
+import static org.powermock.api.mockito.PowerMockito.*
+import static org.mockito.Mockito.*
 
 /**
  * Unit-test {@link PortUtil} class
  */
+@PrepareForTest([PortUtil.class])
 class PortUtilTest extends Specification {
-	static PortUtil portUtil = PortUtil.getInstance()
+	@Rule PowerMockRule rule = new PowerMockRule();
+
+	def "private constructor"() {
+		expect:
+		new PortUtil()
+	}
 
 	def "get available port"() {
+		setup:
+		def serverSocket = mock(ServerSocket)
+		def datagramSocket = mock(DatagramSocket)
 		when:
-		def port = portUtil.getAvailablePort()
+		whenNew(ServerSocket.class).withArguments(anyInt()).thenReturn(serverSocket)
+		whenNew(DatagramSocket.class).withArguments(anyInt()).thenReturn(datagramSocket)
+		def port = PortUtil.getAvailablePort()
 		then:
-		port >= 1024 && port < 65536
+		port >= PortUtil.MIN_PORT_NUMBER && port < PortUtil.MAX_PORT_NUMBER
+	}
+
+	def "get available port (mockStatic)"() {
+		// This rather pointless test does not create any code coverage. It is just a showcase of how 'mockStatic'
+		// could be used when testing another class depending on PortUtil. TODO: remove test
+		setup:
+		mockStatic(PortUtil.class)
+		when:
+		when(PortUtil.getAvailablePort()).thenReturn(12345)
+		then:
+		PortUtil.getAvailablePort() == 12345
 	}
 
 	def "cannot get unavailable port"() {
 		when:
-		def port = portUtil.getAvailablePort()
-		ServerSocket socket = new ServerSocket(port)
-		socket.setReuseAddress(true)
+		whenNew(ServerSocket.class).withArguments(anyInt()).thenThrow(IOException)
 		then:
-		!portUtil.isAvailable(port)
-		cleanup:
-		socket?.close()
+		!PortUtil.isAvailable(PortUtil.MAX_PORT_NUMBER)
 	}
 
 	def "running out of ports"() {
 		setup:
-		def portUtil = Spy(PortUtil) {
-			isAvailable(!null) >> false
-		}
+		spy(PortUtil.class)
 		when:
-		portUtil.getAvailablePort()
+		doReturn(false).when(PortUtil.class, "isAvailable", anyInt())
+		PortUtil.getAvailablePort(PortUtil.MAX_PORT_OFFSET - 3);
+		then:
+		def exception = thrown(IOException)
+		exception.message == "no port available"
+	}
+
+	def "running out of ports (mockStatic)"() {
+		// This rather pointless test does not create any code coverage. It is just a showcase of how 'mockStatic'
+		// could be used when testing another class depending on PortUtil. TODO: remove test
+		setup:
+		mockStatic(PortUtil.class)
+		when:
+		when(PortUtil.getAvailablePort()).thenThrow(new IOException("no port available"))
+		PortUtil.getAvailablePort()
 		then:
 		def exception = thrown(IOException)
 		exception.message == "no port available"
@@ -41,7 +77,7 @@ class PortUtilTest extends Specification {
 	@Unroll("illegal port offset #offset")
 	def "illegal port offsets"() {
 		when:
-		portUtil.getAvailablePort(offset)
+		PortUtil.getAvailablePort(offset)
 		then:
 		thrown(IllegalArgumentException)
 		where:
@@ -51,7 +87,7 @@ class PortUtilTest extends Specification {
 	@Unroll("illegal port no. #port")
 	def "illegal port numbers"() {
 		when:
-		portUtil.isAvailable(port)
+		PortUtil.isAvailable(port)
 		then:
 		thrown(IllegalArgumentException)
 		where:

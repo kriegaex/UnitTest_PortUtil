@@ -7,14 +7,14 @@ import java.net.ServerSocket;
 /**
  * Provides utility methods for checking availability of local TCP/UDP ports
  */
-public class PortUtil {
+public final class PortUtil {
 	public static final int MIN_PORT_NUMBER = 1024;
 	public static final int MAX_PORT_NUMBER = 65535;
 	public static final int MAX_PORT_OFFSET = MAX_PORT_NUMBER - MIN_PORT_NUMBER;
 
 	private static PortUtil instance;
 
-	protected PortUtil() {}
+	private PortUtil() {}
 
 	public static PortUtil getInstance() {
 		if (instance == null)
@@ -29,7 +29,7 @@ public class PortUtil {
 	 * @return true if port is available; false if port is unavailable
 	 * @throws IllegalArgumentException if port is not in range MIN_PORT_NUMBER..MAX_PORT_NUMBER
 	 */
-	public boolean isAvailable(int port) {
+	public static boolean isAvailable(int port) {
 		if (port < MIN_PORT_NUMBER || port > MAX_PORT_NUMBER)
 			throw new IllegalArgumentException("port out of range " + MIN_PORT_NUMBER + ".." + MAX_PORT_NUMBER);
 		ServerSocket serverSocket = null;
@@ -59,7 +59,7 @@ public class PortUtil {
 	 * @return the first free port within the search range
 	 * @throws IOException if no port is available at all
 	 */
-	public int getAvailablePort() throws IOException {
+	public static int getAvailablePort() throws IOException {
 		return getAvailablePort(0);
 	}
 
@@ -71,7 +71,7 @@ public class PortUtil {
 	 * @throws IOException              if no port is available at all
 	 * @throws IllegalArgumentException if offset is not in range 0..MAX_PORT_OFFSET
 	 */
-	public int getAvailablePort(int offset) throws IOException {
+	public static int getAvailablePort(int offset) throws IOException {
 		// TODO: Is this method really needed?
 		if (offset < 0 || offset > MAX_PORT_OFFSET)
 			throw new IllegalArgumentException("offset too big (must be in range 0.." + MAX_PORT_OFFSET + ")");
