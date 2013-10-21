@@ -11,7 +11,7 @@ public final class PortUtil {
 
 	public static final int MIN_PORT_NUMBER = 1024;
 	public static final int MAX_PORT_NUMBER = 65535;
-	public static final int MAX_PORT_OFFSET = MAX_PORT_NUMBER - MIN_PORT_NUMBER - 1;
+	public static final int MAX_PORT_OFFSET = MAX_PORT_NUMBER - MIN_PORT_NUMBER;
 
 	/**
 	 * Checks if a specific TCP/UDP port is available
@@ -69,7 +69,7 @@ public final class PortUtil {
 		// TODO: Is this method really needed?
 		if (offset < 0 || offset > MAX_PORT_OFFSET)
 			throw new IllegalArgumentException("offset too big (must be in range 0.." + MAX_PORT_OFFSET + ")");
-		for (int i = MIN_PORT_NUMBER; i <=MAX_PORT_NUMBER; i++) {
+		for (int i = MIN_PORT_NUMBER + offset; i <= MAX_PORT_NUMBER; i++) {
 			if (isAvailable(i)) {
 				return i;
 			}
