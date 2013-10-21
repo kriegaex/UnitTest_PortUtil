@@ -23,15 +23,15 @@ class PortUtilTest extends Specification {
     }
 
     def "running out of ports"() {
+        setup:
+            def portUtil = Spy(PortUtil) {
+                isAvailable(!null) >> false
+            }
         when:
-            def port = portUtil.getAvailablePort(PortUtil.MAX_PORT_OFFSET)
-            ServerSocket socket = new ServerSocket(port)
-            socket.setReuseAddress(true)
-            port = portUtil.getAvailablePort(PortUtil.MAX_PORT_OFFSET)
+            portUtil.getAvailablePort()
         then:
             def exception = thrown(IOException)
             exception.message == "no port available"
-        cleanup: socket?.close()
     }
 
     @Unroll("illegal port offset #offset")

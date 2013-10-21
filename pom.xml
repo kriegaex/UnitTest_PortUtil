@@ -80,6 +80,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <!-- Required by Spock for mocking classes, not only interfaces -->
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>
             <version>${powermock.version}</version>
